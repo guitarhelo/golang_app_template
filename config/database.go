@@ -1,4 +1,5 @@
 package config
+
 import (
 	"backend_template/models"
 	"github.com/jinzhu/gorm"
@@ -14,7 +15,7 @@ func ConnectDataBase() {
 		panic("Failed to connect to database!")
 	}
 
-	database.AutoMigrate(&models.Person{})
+	database.AutoMigrate(&models.Person{}, &models.User{}, &models.Role{}, &models.UserRole{}, &models.Resource{}, &models.RoleResource{})
 
 	DB = database
 }
