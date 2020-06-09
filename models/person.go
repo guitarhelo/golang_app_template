@@ -6,7 +6,8 @@ import (
 
 type Person struct {
 	gorm.Model
-	Name string `json:"name"`
+	Name   string `json:"name"`
+	Active bool
 }
 
 func (p *Person) TableName() string {
