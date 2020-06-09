@@ -12,8 +12,6 @@ import (
 type PersonController struct {
 	BaseController
 	service.PersonService
-
-
 }
 
 // NewPersonController PersonController的构造函数
@@ -24,7 +22,7 @@ func NewPersonController(p service.PersonService) PersonController {
 
 func (con *PersonController) FindAll(c *gin.Context) {
 
-	persons:=con.PersonService.FindAll()
+	persons := con.PersonService.FindAll()
 	c.JSON(200, gin.H{
 		"data": persons})
 
@@ -50,15 +48,15 @@ func (con *PersonController) DeletePerson(c *gin.Context) {
 
 }
 
- */
+*/
 func (con *PersonController) FindByID(c *gin.Context) {
-    var person models.Person
-	id, _ :=  strconv.Atoi(c.Param("id"))
-	person=con.PersonService.FindByID(uint(id))
+	var person models.Person
+	id, _ := strconv.Atoi(c.Param("id"))
+	person = con.PersonService.FindByID(uint(id))
 	if person != (models.Person{}) {
 		c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "person get successfully!",
 			"data": person})
-	}else {
+	} else {
 		c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "can not find!",
 			"data": person})
 	}
@@ -86,7 +84,7 @@ func (p *PersonController) Update(c *gin.Context) {
 		return
 	}
 
-	id, _ :=  strconv.Atoi(c.Param("id"))
+	id, _ := strconv.Atoi(c.Param("id"))
 	person := p.PersonService.FindByID(uint(id))
 	if person == (models.Person{}) {
 		c.Status(http.StatusBadRequest)
@@ -101,7 +99,7 @@ func (p *PersonController) Update(c *gin.Context) {
 }
 
 func (p *PersonController) Delete(c *gin.Context) {
-	id, _ :=  strconv.Atoi(c.Param("id"))
+	id, _ := strconv.Atoi(c.Param("id"))
 	person := p.PersonService.FindByID(uint(id))
 	if person == (models.Person{}) {
 		c.Status(http.StatusBadRequest)

@@ -2,7 +2,7 @@ package repository
 
 import (
 	"backend_template/config"
-    "backend_template/models"
+	"backend_template/models"
 	"github.com/jinzhu/gorm"
 )
 
@@ -17,9 +17,8 @@ func NewPersonRepostiory(DB *gorm.DB) PersonRepository {
 
 //FindAll Fetch all person data
 
-
 func (p *PersonRepository) FindAll() []models.Person {
-	var persons [] models.Person
+	var persons []models.Person
 	config.DB.Find(&persons)
 
 	return persons

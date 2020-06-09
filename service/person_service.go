@@ -1,4 +1,5 @@
 package service
+
 import (
 	"backend_template/models"
 	"backend_template/repository"
@@ -8,17 +9,17 @@ type PersonService struct {
 	BaseService
 	repository.PersonRepository
 }
+
 // NewPersonService PersonService的构造函数
 func NewPersonService(p repository.PersonRepository) PersonService {
 	return PersonService{PersonRepository: p}
 }
 
-
 //FindAll Fetch all person data
 
 func (s *PersonService) FindAll() []models.Person {
-	var persons [] models.Person
-	persons=s.PersonRepository.FindAll()
+	var persons []models.Person
+	persons = s.PersonRepository.FindAll()
 
 	return persons
 }
