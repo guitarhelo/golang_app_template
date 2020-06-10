@@ -6,6 +6,6 @@ import (
 
 type UserDTO struct {
 	User      models.User       `json:"user"`
-	Roles     []models.Role     `json:"roles"`
+	Roles     []models.UserRole `json:"roles"`
 	Resources []models.Resource `json:"resources"`
 }

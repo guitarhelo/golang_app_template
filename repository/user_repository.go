@@ -4,7 +4,6 @@ import (
 	"backend_template/config"
 	"backend_template/models"
 	"backend_template/models/dto"
-
 	"github.com/jinzhu/gorm"
 )
 
@@ -43,10 +42,11 @@ func (p *UserRepository) Delete(user models.User) {
 }
 func (p *UserRepository) LoadByName(name string) dto.UserDTO {
 	var user models.User
-	var roles []models.Role
+	var roles []models.UserRole
 	var user_dto dto.UserDTO
-	config.DB.Where("name = ?", name).First(&user)
-	config.DB.Where("id = ?", user.ID).Find(&roles)
+	config.DB.Where("username = ?", name).First(&user)
+	//config.DB.Where("id = ?", user.ID).Find(&roles)
+	config.DB.Raw("SELECT c.rolename from `user` a , user_role b ,role c where username=? and a.id=b.user_id and b.role_id=c.id", user.Username).Scan(&roles)
 	user_dto.User = user
 	user_dto.Roles = roles
 	user_dto.Resources = nil
