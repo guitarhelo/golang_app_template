@@ -2,6 +2,7 @@ package service
 
 import (
 	"backend_template/models"
+	"backend_template/models/dto"
 	"backend_template/repository"
 )
 
@@ -36,6 +37,8 @@ func (p *UserService) Save(user models.User) models.User {
 func (p *UserService) Delete(user models.User) {
 	p.UserRepository.Delete(user)
 }
-func (p *UserService) LoadByName(name string) {
-	p.UserRepository.LoadByName(name)
+func (p *UserService) LoadByName(name string) dto.UserDTO {
+	var user_dto dto.UserDTO
+	user_dto = p.UserRepository.LoadByName(name)
+	return user_dto
 }
