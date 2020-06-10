@@ -2,6 +2,7 @@ package router
 
 import (
 	"backend_template/controller"
+	"backend_template/service"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -9,9 +10,9 @@ import (
 
 func DummyMiddleware(c *gin.Context) {
 	fmt.Println("Im a dummy!")
-
-	// Pass on to the next-in-chain
-	c.Next()
+	service.
+		// Pass on to the next-in-chain
+		c.Next()
 }
 func InitRouter() *gin.Engine {
 

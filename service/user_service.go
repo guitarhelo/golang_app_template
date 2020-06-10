@@ -36,3 +36,6 @@ func (p *UserService) Save(user models.User) models.User {
 func (p *UserService) Delete(user models.User) {
 	p.UserRepository.Delete(user)
 }
+func (p *UserService) LoadByName(name string) {
+	p.UserRepository.LoadByName(name)
+}
