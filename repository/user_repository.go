@@ -3,6 +3,8 @@ package repository
 import (
 	"backend_template/config"
 	"backend_template/models"
+	"backend_template/models/dto"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -38,4 +40,16 @@ func (p *UserRepository) Save(user models.User) models.User {
 
 func (p *UserRepository) Delete(user models.User) {
 	config.DB.Delete(&user)
+}
+func (p *UserRepository) LoadByName(name string) dto.UserDTO {
+	var user models.User
+	var roles []models.Role
+	var user_dto dto.UserDTO
+	config.DB.Where("name = ?", name).First(&user)
+	config.DB.Where("id = ?", user.ID).Find(&roles)
+	user_dto.User = user
+	user_dto.Roles = roles
+	user_dto.Resources = nil
+
+	return user_dto
 }
