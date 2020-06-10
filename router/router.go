@@ -2,23 +2,15 @@ package router
 
 import (
 	"backend_template/controller"
-	"backend_template/service"
-	"fmt"
-
+	"backend_template/middleware"
 	"github.com/gin-gonic/gin"
 )
 
-func DummyMiddleware(c *gin.Context) {
-	fmt.Println("Im a dummy!")
-	service.
-		// Pass on to the next-in-chain
-		c.Next()
-}
 func InitRouter() *gin.Engine {
 
 	PersonController := controller.PersonController{}
 	router := gin.Default()
-	router.Use(DummyMiddleware)
+	router.Use(middleware.UserPermissionMiddleware)
 	v1 := router.Group("/api/v1")
 	{
 		v1.GET("/persons", PersonController.FindAll)
