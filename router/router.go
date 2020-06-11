@@ -12,8 +12,8 @@ func InitRouter() *gin.Engine {
 	PersonController := controller.PersonController{}
 	router := gin.Default()
 	router.Use(middleware.UserPermissionMiddleware)
-	router.LoadHTMLGlob("templates/**/*.html")
-	router.LoadHTMLGlob("templates/**/*.html")
+	router.LoadHTMLGlob("templates/*.html")
+	router.Static("/css", "../templates/css")
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
