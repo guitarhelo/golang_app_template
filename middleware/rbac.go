@@ -3,8 +3,10 @@ package middleware
 import (
 	"backend_template/models/dto"
 	"backend_template/service"
+	"backend_template/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	. "github.com/vibrantbyte/go-antpath/antpath"
 )
 
 type Rbac struct {
@@ -13,17 +15,17 @@ type Rbac struct {
 
 var userDto dto.UserDTO
 
-func GetUserPermissionList() []dto.ResourceDTO {
-	var userPermissionList []dto.ResourceDTO
+func GetUserPermissionList() []string {
+	var userPermissionList []string
 	permissionList := userDto.Resources
 
 	for _, v := range permissionList {
 		//fmt.Println(k, v)
 		for i := 0; i < len(v); i++ {
-			userPermissionList = append(userPermissionList, v[i])
+			userPermissionList = append(userPermissionList, v[i].Url)
 		}
 	}
-	fmt.Print(userPermissionList)
+	//fmt.Print(userPermissionList)
 
 	return userPermissionList
 }
@@ -35,7 +37,31 @@ func UserPermissionMiddleware(c *gin.Context) {
 	fmt.Print(url)
 	fmt.Print(userDto)
 	userPermissionList := GetUserPermissionList()
+	userPermissionList = util.RemoveRepeatedElement(userPermissionList)
 	fmt.Print(userPermissionList)
-	// Pass on to the next-in-chain
-	c.Next()
+	if UseHavePermission(url, userPermissionList) != "" {
+		// Pass on to the next-in-chain
+		c.Next()
+	} else {
+		c.Abort()
+		c.JSON(401, gin.H{
+			"code": "401",
+
+			"Message": "you have not permission to access this resources"})
+
+	}
+
+}
+func UseHavePermission(requestURL string, userPermissionList []string) string {
+	var matcher PathMatcher
+	matcher = New()
+
+	for i := 0; i < len(userPermissionList); i++ {
+		if matcher.Match(userPermissionList[i], requestURL) {
+			return userPermissionList[i]
+		}
+
+	}
+
+	return ""
 }

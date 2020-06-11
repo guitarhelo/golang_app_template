@@ -42,3 +42,7 @@ func (p *UserService) LoadByName(name string) dto.UserDTO {
 	user_dto = p.UserRepository.LoadByName(name)
 	return user_dto
 }
+func (p *UserService) Login(user models.User) dto.UserDTO {
+
+	return p.LoadByName(user.Username)
+}
