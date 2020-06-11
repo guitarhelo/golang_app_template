@@ -5,7 +5,7 @@ import (
 )
 
 type UserDTO struct {
-	User      models.User       `json:"user"`
-	Roles     []RoleDTO         `json:"roles"`
-	Resources []models.Resource `json:"resources"`
+	User      models.User              `json:"user"`
+	Roles     []RoleDTO                `json:"roles"`
+	Resources map[string][]ResourceDTO `json:"resources"`
 }

@@ -16,7 +16,8 @@ func UserPermissionMiddleware(c *gin.Context) {
 	UserService := service.UserService{}
 	fmt.Println("Im a Rbac middleware!")
 	user_dto = UserService.LoadByName("john")
-
+	url := c.Request.RequestURI
+	fmt.Print(url)
 	fmt.Print(user_dto)
 	// Pass on to the next-in-chain
 	c.Next()
