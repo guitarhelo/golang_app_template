@@ -4,7 +4,11 @@ import (
 	"backend_template/controller"
 	"backend_template/middleware"
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	swaggerFiles "github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/http"
+
+	"backend_template/docs"
 )
 
 func InitRouter() *gin.Engine {
@@ -24,6 +28,9 @@ func InitRouter() *gin.Engine {
 	admin.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "admin-overview.html", nil)
 	})
+
+	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	v1 := router.Group("/api/v1")
 	{
