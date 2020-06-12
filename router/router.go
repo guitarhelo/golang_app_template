@@ -2,16 +2,24 @@ package router
 
 import (
 	"backend_template/controller"
+	"backend_template/docs"
 	"backend_template/middleware"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	swaggerFiles "github.com/swaggo/gin-swagger/swaggerFiles"
-	"net/http"
 
-	"backend_template/docs"
+	_ "backend_template/docs"
+	swaggerFiles "github.com/swaggo/gin-swagger/swaggerFiles"
+
+	"net/http"
 )
 
 func InitRouter() *gin.Engine {
+	// programatically set swagger info
+	docs.SwaggerInfo.Title = "Swagger Example API"
+	docs.SwaggerInfo.Description = "This is a sample server for Swagger."
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "http://localhost:8080/api/v2"
+	docs.SwaggerInfo.BasePath = "/v2"
 
 	PersonController := controller.PersonController{}
 	router := gin.Default()
@@ -29,9 +37,7 @@ func InitRouter() *gin.Engine {
 		c.HTML(http.StatusOK, "admin-overview.html", nil)
 	})
 
-	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	v1 := router.Group("/api/v1")
 	{
 		v1.GET("/persons", PersonController.FindAll)
