@@ -37,9 +37,29 @@ func InitRouter() *gin.Engine {
 		c.HTML(http.StatusOK, "admin-overview.html", nil)
 	})
 
+	// Name will print hello name
+	// @Summary Print
+	// @Accept json
+	// @Tags Name
+	// @Security Bearer
+	// @Produce  json
+	// @Param name path string true "name"
+	// @Resource Name
+	// @Router /hello/{name} [get]
+	// @Success 200 {object} main.Message
+	admin.GET("/hello/:name", func(c *gin.Context) {
+		name := c.Param("name")
+		message := "Hello World" + name
+		c.JSON(200, gin.H{
+			"message": message,
+		})
+
+	})
+
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	v1 := router.Group("/api/v1")
 	{
+
 		v1.GET("/persons", PersonController.FindAll)
 
 		v1.GET("/persons/:id", PersonController.FindByID)
