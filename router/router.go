@@ -25,12 +25,17 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 	router.Use(middleware.UserPermissionMiddleware)
 	router.LoadHTMLGlob("templates/*.html")
-	router.Static("/css", "../templates/css")
+	router.Static("/templates/assets", "../templates/assets")
+
 	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", nil)
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "Home Page",
+		})
 	})
 	router.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", nil)
+		c.HTML(http.StatusOK, "login.html", gin.H{
+			"title": "Login Page",
+		})
 	})
 	admin := router.Group("/admin")
 	admin.GET("/", func(c *gin.Context) {
