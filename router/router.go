@@ -25,15 +25,14 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 	router.Use(middleware.UserPermissionMiddleware)
 	router.LoadHTMLGlob("templates/*.html")
-	router.Static("/templates/assets", "../templates/assets")
-
+	router.Static("/assets", "./assets")
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"title": "Home Page",
 		})
 	})
 	router.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", gin.H{
+		c.HTML(http.StatusOK, "login.tmpl.html", gin.H{
 			"title": "Login Page",
 		})
 	})
