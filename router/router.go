@@ -22,6 +22,8 @@ func InitRouter() *gin.Engine {
 	docs.SwaggerInfo.BasePath = "/v2"
 
 	PersonController := controller.PersonController{}
+	UserController := controller.UserController{}
+
 	router := gin.Default()
 	router.Use(middleware.UserPermissionMiddleware)
 	router.LoadHTMLGlob("templates/*.html")
@@ -36,6 +38,7 @@ func InitRouter() *gin.Engine {
 			"title": "Login Page",
 		})
 	})
+	router.POST("/login", UserController.Login)
 	admin := router.Group("/admin")
 	admin.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "admin-overview.html", nil)

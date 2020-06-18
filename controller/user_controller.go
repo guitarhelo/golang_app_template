@@ -36,8 +36,33 @@ func (con *UserController) LogOut(c *gin.Context) {
 
 func (con *UserController) Login(c *gin.Context) {
 
-	c.JSON(200, gin.H{
-		"Message": "User Login"})
+	var user models.User
+
+	err := c.BindJSON(&user)
+	if err != nil {
+		log.Fatalln(err)
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	userDTO := con.UserService.LoadByName(user.Username)
+
+	if userDTO.User != (models.User{}) {
+
+		if userDTO.User.Password == user.Password {
+			c.JSON(200, gin.H{
+				"Code":    "200",
+				"Message": "User Login",
+				"data":    userDTO,
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"Message": "用户名或密码错误"})
+		}
+	} else {
+		c.JSON(200, gin.H{
+			"Message": "User is not exist,please create one"})
+	}
 
 }
 
